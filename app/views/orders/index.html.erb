@@ -1,0 +1,11 @@
+<h1>Orders</h1>
+
+<% @orders.each do |order| %>
+  <div>
+    <h2><%= link_to "Order ##{order.id}", order %></h2>
+    <p>Total: $<%= sprintf('%.2f', order.total) %></p>
+    <p>Placed: <%= order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+  </div>
+<% end %>
+
+<%= link_to "Back to Products", products_path %>

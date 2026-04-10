@@ -1,0 +1,16 @@
+<h1>Order #<%= @order.id %></h1>
+
+<p>Total: $<%= sprintf('%.2f', @order.total) %></p>
+
+<h2>Items</h2>
+
+<% @order.order_items.each do |item| %>
+  <div>
+    <h3><%= item.product.name %></h3>
+    <p>Quantity: <%= item.quantity %></p>
+    <p>Price: $<%= sprintf('%.2f', item.price) %></p>
+    <p>Subtotal: $<%= sprintf('%.2f', item.price.to_f * item.quantity) %></p>
+  </div>
+<% end %>
+
+<%= link_to "Back to Orders", orders_path %>

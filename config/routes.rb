@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "orders/index"
+  get "orders/show"
   root "products#index"
 
   resources :products do
@@ -11,4 +13,6 @@ Rails.application.routes.draw do
   post "checkout", to: "products#checkout"
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  resources :orders, only: [ :index, :show ]
 end
