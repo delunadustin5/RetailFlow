@@ -1,19 +1,27 @@
-<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; margin: 0;">
 
-  <div style="max-width: 800px; margin: 0 auto;">
-    <h1>Orders</h1>
+  <div style="background-color: #222; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">RetailFlow</h1>
+    <div>
+      <%= link_to "Products", products_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Cart", cart_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Orders", orders_path, style: "color: white; text-decoration: none; font-weight: bold;" %>
+    </div>
+  </div>
 
-    <% @orders.each do |order| %>
-      <div style="background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-        <h2>
-          <%= link_to "Order ##{order.id}", order, style: "text-decoration: none; color: #007bff;" %>
-        </h2>
+  <div style="padding: 40px;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h1>Orders</h1>
 
-        <p><strong>Total:</strong> $<%= sprintf('%.2f', order.total) %></p>
-        <p><strong>Placed:</strong> <%= order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
-      </div>
-    <% end %>
-
-    <%= link_to "Back to Products", products_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
+      <% @orders.each do |order| %>
+        <div style="background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h2>
+            <%= link_to "Order ##{order.id}", order, style: "text-decoration: none; color: #007bff;" %>
+          </h2>
+          <p><strong>Total:</strong> $<%= sprintf('%.2f', order.total) %></p>
+          <p><strong>Placed:</strong> <%= order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

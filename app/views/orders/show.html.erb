@@ -1,24 +1,33 @@
-<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; margin: 0;">
 
-  <div style="max-width: 800px; margin: 0 auto;">
-    <h1>Order #<%= @order.id %></h1>
+  <div style="background-color: #222; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">RetailFlow</h1>
+    <div>
+      <%= link_to "Products", products_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Cart", cart_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Orders", orders_path, style: "color: white; text-decoration: none; font-weight: bold;" %>
+    </div>
+  </div>
 
-    <div style="background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+  <div style="padding: 40px;">
+    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+      <h1>Order #<%= @order.id %></h1>
+
       <p><strong>Total:</strong> $<%= sprintf('%.2f', @order.total) %></p>
       <p><strong>Date:</strong> <%= @order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+
+      <h2 style="margin-top: 25px;">Items</h2>
+
+      <% @order.order_items.each do |item| %>
+        <div style="background: #f9f9f9; padding: 15px; margin-bottom: 12px; border-radius: 8px;">
+          <h3><%= item.product.name %></h3>
+          <p>Quantity: <%= item.quantity %></p>
+          <p>Price: $<%= sprintf('%.2f', item.price) %></p>
+          <p>Subtotal: $<%= sprintf('%.2f', item.price.to_f * item.quantity) %></p>
+        </div>
+      <% end %>
+
+      <%= link_to "Back to Orders", orders_path, style: "display: inline-block; margin-top: 20px; color: #007bff; font-weight: bold;" %>
     </div>
-
-    <h2>Items</h2>
-
-    <% @order.order_items.each do |item| %>
-      <div style="background: white; padding: 20px; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-        <h3><%= item.product.name %></h3>
-        <p><strong>Quantity:</strong> <%= item.quantity %></p>
-        <p><strong>Price:</strong> $<%= sprintf('%.2f', item.price) %></p>
-        <p><strong>Subtotal:</strong> $<%= sprintf('%.2f', item.price.to_f * item.quantity) %></p>
-      </div>
-    <% end %>
-
-    <%= link_to "Back to Orders", orders_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
   </div>
 </div>
