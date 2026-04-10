@@ -15,7 +15,18 @@
           <h2><%= product.name %></h2>
           <p><%= product.description %></p>
           <p><strong>Price:</strong> $<%= sprintf('%.2f', product.price) %></p>
-          <p><strong>Quantity:</strong> <%= quantity %></p>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <strong>Quantity:</strong>
+
+            <%= button_to "-", decrease_quantity_path(product.id), method: :post,
+            style: "background-color: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;" %>
+
+            <span><%= quantity %></span>
+
+            <%= button_to "+", increase_quantity_path(product.id), method: :post,
+             style: "background-color: #28a745; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;" %>
+            </div>
+            
           <p><strong>Subtotal:</strong> $<%= sprintf('%.2f', subtotal) %></p>
 
           <%= button_to "Remove", remove_from_cart_path(product.id), method: :post,

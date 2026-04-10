@@ -79,6 +79,29 @@ end
     redirect_to products_path, notice: "Order placed successfully!"
   end
 
+  def increase_quantity
+  normalize_cart_session
+
+  product_id = params[:id].to_s
+  session[:cart][product_id] ||= 0
+  session[:cart][product_id] += 1
+
+  redirect_to cart_path
+  end
+
+  def decrease_quantity
+  normalize_cart_session
+
+  product_id = params[:id].to_s
+
+  if session[:cart][product_id]
+    session[:cart][product_id] -= 1
+    session[:cart].delete(product_id) if session[:cart][product_id] <= 0
+  end
+
+  redirect_to cart_path
+  end
+
   private
 
   def normalize_cart_session
