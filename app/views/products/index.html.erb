@@ -18,8 +18,18 @@
 
     <div style="margin-bottom: 25px;">
       <%= form_with url: products_path, method: :get, local: true do %>
-      <%= text_field_tag :search, params[:search], placeholder: "Search products...", style: "padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 5px;" %>
-      <%= submit_tag "Search", style: "background-color: #007bff; color: white; padding: 10px 14px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: 8px;" %>
+
+      <%= text_field_tag :search, params[:search], placeholder: "Search products...",
+        style: "padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px;" %>
+
+      <%= select_tag :category,
+        options_for_select(Product.pluck(:category).uniq, params[:category]),
+        include_blank: "All Categories",
+        style: "padding: 10px; margin-left: 8px; border-radius: 5px;" %>
+
+      <%= submit_tag "Search",
+        style: "background-color: #007bff; color: white; padding: 10px 14px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: 8px;" %>
+
       <% end %>
     </div>
 
