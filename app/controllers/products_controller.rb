@@ -52,32 +52,38 @@ end
   end
 
   def checkout
-    normalize_cart_session
+  normalize_cart_session
 
-    order = Order.create(total: 0)
-    total = 0
+  order = Order.create(total: 0)
+  total = 0
 
-    session[:cart].each do |product_id, quantity|
-      product = Product.find_by(id: product_id)
-      next unless product
+  session[:cart].each do |product_id, quantity|
+    product = Product.find_by(id: product_id)
+    next unless product
 
-      quantity = quantity.to_i
-      subtotal = product.price.to_f * quantity
+    quantity = quantity.to_i
+    next if quantity <= 0
+    next if product.stock < quantity
 
-      order.order_items.create(
-        product: product,
-        quantity: quantity,
-        price: product.price
-      )
+    subtotal = product.price.to_f * quantity
 
-      total += subtotal
-    end
+    order.order_items.create(
+      product: product,
+      quantity: quantity,
+      price: product.price
+    )
 
-    order.update(total: total)
-    session[:cart] = {}
+    total += subtotal
 
-    redirect_to products_path, notice: "Order placed successfully!"
+    product.update(stock: product.stock - quantity)
   end
+
+  order.update(total: total)
+  session[:cart] = {}
+
+  redirect_to products_path, notice: "Order placed successfully!"
+end
+end
 
   def increase_quantity
   normalize_cart_session
@@ -116,5 +122,4 @@ end
     else
       session[:cart] ||= {}
     end
-  end
 end

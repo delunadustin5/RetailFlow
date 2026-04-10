@@ -9,11 +9,19 @@
     <p style="font-size: 18px; color: #666;"><%= @product.description %></p>
     <p><strong>Category:</strong> <%= @product.category %></p>
     <p><strong>Price:</strong> $<%= sprintf('%.2f', @product.price) %></p>
+    <% if @product.stock > 0 %>
     <p><strong>Stock:</strong> <%= @product.stock %></p>
+        <% else %>
+    <p style="color: red; font-weight: bold;">Out of Stock</p>
+    <% end %>
 
     <div style="margin-top: 20px;">
-      <%= button_to "Add to Cart", add_to_cart_product_path(@product), method: :post,
-          style: "background-color: #28a745; color: white; padding: 10px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+        <% if @product.stock > 0 %>
+        <%= button_to "Add to Cart", add_to_cart_product_path(@product), method: :post,
+        style: "background-color: #28a745; color: white; padding: 10px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+        <% else %>
+        <p style="color: red; font-weight: bold;">This product is currently out of stock.</p>
+    <% end %>
     </div>
 
     <div style="margin-top: 20px;">
