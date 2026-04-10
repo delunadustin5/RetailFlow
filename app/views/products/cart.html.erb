@@ -22,6 +22,7 @@
   <% end %>
 
   <h2>Total: $<%= sprintf('%.2f', total) %></h2>
+  <%= button_to "Checkout", checkout_path, method: :post %>
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>

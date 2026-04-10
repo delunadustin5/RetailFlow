@@ -40,6 +40,11 @@ class ProductsController < ApplicationController
     redirect_to cart_path
   end
 
+  def checkout
+    session[:cart] = {}
+    redirect_to products_path, notice: "Order placed successfully!"
+  end
+
   private
 
   def normalize_cart_session
