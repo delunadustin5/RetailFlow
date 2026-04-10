@@ -1,11 +1,19 @@
-<h1>Orders</h1>
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
 
-<% @orders.each do |order| %>
-  <div>
-    <h2><%= link_to "Order ##{order.id}", order %></h2>
-    <p>Total: $<%= sprintf('%.2f', order.total) %></p>
-    <p>Placed: <%= order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+  <div style="max-width: 800px; margin: 0 auto;">
+    <h1>Orders</h1>
+
+    <% @orders.each do |order| %>
+      <div style="background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <h2>
+          <%= link_to "Order ##{order.id}", order, style: "text-decoration: none; color: #007bff;" %>
+        </h2>
+
+        <p><strong>Total:</strong> $<%= sprintf('%.2f', order.total) %></p>
+        <p><strong>Placed:</strong> <%= order.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+      </div>
+    <% end %>
+
+    <%= link_to "Back to Products", products_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
   </div>
-<% end %>
-
-<%= link_to "Back to Products", products_path %>
+</div>
