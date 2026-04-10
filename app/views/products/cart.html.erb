@@ -2,17 +2,23 @@
 
 <% total = 0 %>
 
-<% if @cart_products.any? %>
-  <% @cart_products.each do |product| %>
+<% if @cart_items.any? %>
+  <% @cart_items.each do |item| %>
+    <% product = item[:product] %>
+    <% quantity = item[:quantity].to_i %>
+    <% subtotal = product.price.to_f * quantity %>
+
     <div>
       <h2><%= product.name %></h2>
       <p><%= product.description %></p>
       <p>Price: $<%= sprintf('%.2f', product.price) %></p>
+      <p>Quantity: <%= quantity %></p>
+      <p>Subtotal: $<%= sprintf('%.2f', subtotal) %></p>
 
       <%= button_to "Remove", remove_from_cart_path(product.id), method: :post %>
     </div>
 
-    <% total += product.price %>
+    <% total += subtotal %>
   <% end %>
 
   <h2>Total: $<%= sprintf('%.2f', total) %></h2>
