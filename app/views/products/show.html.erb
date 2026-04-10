@@ -1,10 +1,20 @@
-<h1><%= @product.name %></h1>
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
 
-<p><%= @product.description %></p>
-<p>Price: $<%= sprintf('%.2f', @product.price) %></p>
-<p>Stock: <%= @product.stock %></p>
-<p>Category: <%= @product.category %></p>
+  <div style="max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h1 style="margin-top: 0;"><%= @product.name %></h1>
 
-<%= button_to "Add to Cart", add_to_cart_product_path(@product), method: :post %>
+    <p style="font-size: 18px; color: #666;"><%= @product.description %></p>
+    <p><strong>Category:</strong> <%= @product.category %></p>
+    <p><strong>Price:</strong> $<%= sprintf('%.2f', @product.price) %></p>
+    <p><strong>Stock:</strong> <%= @product.stock %></p>
 
-<%= link_to "Back", products_path %>
+    <div style="margin-top: 20px;">
+      <%= button_to "Add to Cart", add_to_cart_product_path(@product), method: :post,
+          style: "background-color: #28a745; color: white; padding: 10px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <%= link_to "Back to Products", products_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
+    </div>
+  </div>
+</div>

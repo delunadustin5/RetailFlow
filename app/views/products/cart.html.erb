@@ -1,30 +1,42 @@
-<h1>Your Cart</h1>
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
 
-<% total = 0 %>
+  <div style="max-width: 800px; margin: 0 auto;">
+    <h1>Your Cart</h1>
 
-<% if @cart_items.any? %>
-  <% @cart_items.each do |item| %>
-    <% product = item[:product] %>
-    <% quantity = item[:quantity].to_i %>
-    <% subtotal = product.price.to_f * quantity %>
+    <% total = 0 %>
 
-    <div>
-      <h2><%= product.name %></h2>
-      <p><%= product.description %></p>
-      <p>Price: $<%= sprintf('%.2f', product.price) %></p>
-      <p>Quantity: <%= quantity %></p>
-      <p>Subtotal: $<%= sprintf('%.2f', subtotal) %></p>
+    <% if @cart_items.any? %>
+      <% @cart_items.each do |item| %>
+        <% product = item[:product] %>
+        <% quantity = item[:quantity].to_i %>
+        <% subtotal = product.price.to_f * quantity %>
 
-      <%= button_to "Remove", remove_from_cart_path(product.id), method: :post %>
+        <div style="background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h2><%= product.name %></h2>
+          <p><%= product.description %></p>
+          <p><strong>Price:</strong> $<%= sprintf('%.2f', product.price) %></p>
+          <p><strong>Quantity:</strong> <%= quantity %></p>
+          <p><strong>Subtotal:</strong> $<%= sprintf('%.2f', subtotal) %></p>
+
+          <%= button_to "Remove", remove_from_cart_path(product.id), method: :post,
+              style: "background-color: #dc3545; color: white; padding: 10px 14px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+        </div>
+
+        <% total += subtotal %>
+      <% end %>
+
+      <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <h2>Total: $<%= sprintf('%.2f', total) %></h2>
+
+        <%= button_to "Checkout", checkout_path, method: :post,
+            style: "background-color: #28a745; color: white; padding: 12px 18px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px;" %>
+      </div>
+    <% else %>
+      <p>Your cart is empty.</p>
+    <% end %>
+
+    <div style="margin-top: 20px;">
+      <%= link_to "Continue Shopping", products_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
     </div>
-
-    <% total += subtotal %>
-  <% end %>
-
-  <h2>Total: $<%= sprintf('%.2f', total) %></h2>
-  <%= button_to "Checkout", checkout_path, method: :post %>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
-
-<%= link_to "Continue Shopping", products_path %>
+  </div>
+</div>

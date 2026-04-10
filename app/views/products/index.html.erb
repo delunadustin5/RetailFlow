@@ -1,14 +1,40 @@
-<h1>Products</h1>
-<% if notice %>
-  <p style="color: green;"><%= notice %></p>
-<% end %>
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 0; margin: 0;">
 
-<p><%= link_to "View Orders", orders_path %></p>
-
-<% @products.each do |product| %>
-  <div>
-    <h2><%= link_to product.name, product %></h2>
-    <p><%= product.description %></p>
-    <p>Price: $<%= sprintf('%.2f', product.price) %></p>
+  <div style="background-color: #222; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">RetailFlow</h1>
+    <div>
+      <%= link_to "Products", products_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Cart", cart_path, style: "color: white; margin-right: 20px; text-decoration: none; font-weight: bold;" %>
+      <%= link_to "Orders", orders_path, style: "color: white; text-decoration: none; font-weight: bold;" %>
+    </div>
   </div>
-<% end %>
+
+  <div style="padding: 30px 40px;">
+    <% if notice %>
+      <p style="color: green; font-weight: bold; background: #e6ffe6; padding: 10px; border: 1px solid #b2d8b2; border-radius: 5px;">
+        <%= notice %>
+      </p>
+    <% end %>
+
+    <h2 style="margin-bottom: 25px;">Available Products</h2>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <% @products.each do |product| %>
+        <div style="background: white; border: 1px solid #ddd; border-radius: 10px; width: 250px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h3 style="margin-top: 0;">
+            <%= link_to product.name, product, style: "text-decoration: none; color: #222;" %>
+          </h3>
+
+          <p style="color: #666;"><%= product.description %></p>
+          <p><strong>Category:</strong> <%= product.category %></p>
+          <p><strong>Price:</strong> $<%= sprintf('%.2f', product.price) %></p>
+          <p><strong>Stock:</strong> <%= product.stock %></p>
+
+          <div style="margin-top: 15px;">
+            <%= link_to "View Product", product, style: "display: inline-block; background-color: #007bff; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
