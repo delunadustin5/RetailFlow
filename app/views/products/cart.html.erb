@@ -1,0 +1,23 @@
+<h1>Your Cart</h1>
+
+<% total = 0 %>
+
+<% if @cart_products.any? %>
+  <% @cart_products.each do |product| %>
+    <div>
+      <h2><%= product.name %></h2>
+      <p><%= product.description %></p>
+      <p>Price: $<%= sprintf('%.2f', product.price) %></p>
+
+      <%= button_to "Remove", remove_from_cart_path(product.id), method: :post %>
+    </div>
+
+    <% total += product.price %>
+  <% end %>
+
+  <h2>Total: $<%= sprintf('%.2f', total) %></h2>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
+<%= link_to "Continue Shopping", products_path %>

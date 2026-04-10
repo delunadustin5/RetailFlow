@@ -1,0 +1,9 @@
+<h1>Products</h1>
+
+<% @products.each do |product| %>
+  <div>
+    <h2><%= link_to product.name, product %></h2>
+    <p><%= product.description %></p>
+    <p>Price: $<%= sprintf('%.2f', product.price) %></p>
+  </div>
+<% end %>
