@@ -1,0 +1,46 @@
+<% if product.errors.any? %>
+  <div style="color: red; margin-bottom: 20px;">
+    <h3><%= pluralize(product.errors.count, "error") %> prevented this product from being saved:</h3>
+    <ul>
+      <% product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: product, local: true do |form| %>
+  <div style="margin-bottom: 15px;">
+    <%= form.label :name %><br>
+    <%= form.text_field :name, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= form.label :description %><br>
+    <%= form.text_area :description, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= form.label :price %><br>
+    <%= form.number_field :price, step: 0.01, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= form.label :stock %><br>
+    <%= form.number_field :stock, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= form.label :category %><br>
+    <%= form.text_field :category, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <%= form.label :image %><br>
+    <%= form.text_field :image, style: "width: 300px; padding: 8px;" %>
+  </div>
+
+  <div>
+    <%= form.submit style: "background-color: #007bff; color: white; padding: 10px 14px; border: none; border-radius: 5px;" %>
+  </div>
+<% end %>

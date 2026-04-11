@@ -1,21 +1,55 @@
 class ProductsController < ApplicationController
-def index
-  @products = Product.all
+  def index
+    @products = Product.all
 
-  if params[:search].present?
-    @products = @products.where("name LIKE ? OR description LIKE ? OR category LIKE ?",
-    "%#{params[:search]}%",
-    "%#{params[:search]}%",
-    "%#{params[:search]}%")
-  end
+    if params[:search].present?
+      @products = @products.where("name LIKE ? OR description LIKE ? OR category LIKE ?",
+      "%#{params[:search]}%",
+      "%#{params[:search]}%",
+      "%#{params[:search]}%")
+    end
 
-  if params[:category].present?
-    @products = @products.where(category: params[:category])
+    if params[:category].present?
+      @products = @products.where(category: params[:category])
+    end
   end
-end
 
   def show
     @product = Product.find(params[:id])
+  end
+
+  def new
+    @product = Product.new
+  end
+
+  def create
+    @product = Product.new(product_params)
+
+    if @product.save
+      redirect_to products_path, notice: "Product created successfully!"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @product = Product.find(params[:id])
+  end
+
+  def update
+    @product = Product.find(params[:id])
+
+    if @product.update(product_params)
+      redirect_to products_path, notice: "Product updated successfully!"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @product = Product.find(params[:id])
+    @product.destroy
+    redirect_to products_path, notice: "Product deleted successfully!"
   end
 
   def add_to_cart
@@ -51,61 +85,59 @@ end
     redirect_to cart_path
   end
 
-  def checkout
-  normalize_cart_session
-
-  order = Order.create(total: 0)
-  total = 0
-
-  session[:cart].each do |product_id, quantity|
-    product = Product.find_by(id: product_id)
-    next unless product
-
-    quantity = quantity.to_i
-    next if quantity <= 0
-    next if product.stock < quantity
-
-    subtotal = product.price.to_f * quantity
-
-    order.order_items.create(
-      product: product,
-      quantity: quantity,
-      price: product.price
-    )
-
-    total += subtotal
-
-    product.update(stock: product.stock - quantity)
-  end
-
-  order.update(total: total)
-  session[:cart] = {}
-
-  redirect_to products_path, notice: "Order placed successfully!"
-end
-end
-
   def increase_quantity
-  normalize_cart_session
+    normalize_cart_session
 
-  product_id = params[:id].to_s
-  session[:cart][product_id] ||= 0
-  session[:cart][product_id] += 1
+    product_id = params[:id].to_s
+    session[:cart][product_id] ||= 0
+    session[:cart][product_id] += 1
 
-  redirect_to cart_path
+    redirect_to cart_path
   end
 
   def decrease_quantity
-  normalize_cart_session
+    normalize_cart_session
 
-  product_id = params[:id].to_s
+    product_id = params[:id].to_s
 
-  if session[:cart][product_id]
-    session[:cart][product_id] -= 1
-    session[:cart].delete(product_id) if session[:cart][product_id] <= 0
+    if session[:cart][product_id]
+      session[:cart][product_id] -= 1
+      session[:cart].delete(product_id) if session[:cart][product_id] <= 0
+    end
+
+    redirect_to cart_path
   end
 
-  redirect_to cart_path
+  def checkout
+    normalize_cart_session
+
+    order = Order.create(total: 0)
+    total = 0
+
+    session[:cart].each do |product_id, quantity|
+      product = Product.find_by(id: product_id)
+      next unless product
+
+      quantity = quantity.to_i
+      next if quantity <= 0
+      next if product.stock < quantity
+
+      subtotal = product.price.to_f * quantity
+
+      order.order_items.create(
+        product: product,
+        quantity: quantity,
+        price: product.price
+      )
+
+      total += subtotal
+      product.update(stock: product.stock - quantity)
+    end
+
+    order.update(total: total)
+    session[:cart] = {}
+
+    redirect_to products_path, notice: "Order placed successfully!"
   end
 
   private
@@ -122,4 +154,9 @@ end
     else
       session[:cart] ||= {}
     end
+  end
+
+  def product_params
+    params.require(:product).permit(:name, :description, :price, :stock, :category, :image)
+  end
 end

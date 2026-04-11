@@ -16,10 +16,15 @@
       </p>
     <% end %>
 
+    <p>
+    <%= link_to "Add New Product", new_product_path,
+      style: "background-color: #007bff; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+    </p>
+
     <div style="margin-bottom: 25px;">
       <%= form_with url: products_path, method: :get, local: true do %>
 
-      <%= text_field_tag :search, params[:search], placeholder: "Search products...",
+      <%= text_field_tag :search, params[:search], placeholder: "Search products",
         style: "padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px;" %>
 
       <%= select_tag :category,
@@ -70,6 +75,16 @@
         <% else %>
         <span style="color: red; font-weight: bold;">Out of Stock</span>
         <% end %>
+      </div>
+
+      <div style="margin-top: 10px; display: flex; gap: 10px;">
+      <%= link_to "Edit", edit_product_path(product),
+      style: "background-color: #ffc107; color: black; padding: 8px 12px; border-radius: 5px; text-decoration: none;" %>
+
+      <%= button_to "Delete", product_path(product),
+      method: :delete,
+      data: { confirm: "Are you sure?" },
+      style: "background-color: #dc3545; color: white; padding: 8px 12px; border: none; border-radius: 5px;" %>
       </div>
       </div>
     <% end %>

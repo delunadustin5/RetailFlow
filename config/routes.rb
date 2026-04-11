@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root "products#index"
 
   resources :products do
-    post "add_to_cart", on: :member
+  post "add_to_cart", on: :member
   end
 
   get "cart", to: "products#cart"
