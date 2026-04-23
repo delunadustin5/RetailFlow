@@ -24,6 +24,38 @@
   </head>
 
   <body>
-    <%= yield %>
-  </body>
+
+  <!-- NAVBAR -->
+  <div style="background-color: #222; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    
+    <h1 style="margin: 0;">RetailFlow</h1>
+
+    <div>
+      <%= link_to "Products", products_path, style: "color: white; margin-right: 20px;" %>
+      <%= link_to "Cart (#{@cart_count})", cart_path, style: "color: white; margin-right: 20px;" %>
+      <%= link_to "Orders", orders_path, style: "color: white; margin-right: 20px;" %>
+
+      <% if user_signed_in? %>
+        <span style="margin-right: 10px;">
+          <%= current_user.email %>
+        </span>
+
+        <%= button_to "Logout", destroy_user_session_path,
+    method: :delete,
+    style: "background: none; border: none; color: white; cursor: pointer; padding: 0; display: inline;" %>
+      <% else %>
+        <%= link_to "Login", new_user_session_path,
+            style: "color: white; margin-right: 10px;" %>
+
+        <%= link_to "Sign Up", new_user_registration_path,
+            style: "color: white;" %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <%= yield %>
+
+</body>
 </html>

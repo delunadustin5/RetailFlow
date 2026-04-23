@@ -111,7 +111,7 @@ class ProductsController < ApplicationController
   def checkout
     normalize_cart_session
 
-    order = Order.create(total: 0)
+    order = current_user.orders.create(total: 0)
     total = 0
 
     session[:cart].each do |product_id, quantity|
@@ -159,4 +159,6 @@ class ProductsController < ApplicationController
   def product_params
     params.require(:product).permit(:name, :description, :price, :stock, :category, :image)
   end
+
+  before_action :authenticate_user!, except: [ :index, :show ]
 end
