@@ -1,7 +1,10 @@
 <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; min-height: 100vh; padding: 40px;">
     <% if @product.image.present? %>
-     <%= image_tag @product.image, style: "width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 20px;" if @product.image.present? %>
-     <% end %>
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <%= image_tag @product.image,
+        style: "width: 100%; max-width: 400px; height: 250px; object-fit: cover; border-radius: 10px;" %>
+  </div>
+<% end %>
 
   <div style="max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
     <h1 style="margin-top: 0;"><%= @product.name %></h1>

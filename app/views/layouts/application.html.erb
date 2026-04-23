@@ -23,36 +23,35 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body style="<%= 'background-color: black; color: white;' if controller_name == 'sessions' || controller_name == 'registrations' %>">
 
   <!-- NAVBAR -->
-  <div style="background-color: #222; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
-    
-    <h1 style="margin: 0;">RetailFlow</h1>
+  <div style="background-color: #ffcc00; border-bottom: 1px solid #d9d9d9; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; font-family: Arial, sans-serif;">
 
-    <div>
-      <%= link_to "Products", products_path, style: "color: white; margin-right: 20px;" %>
-      <%= link_to "Cart (#{@cart_count})", cart_path, style: "color: white; margin-right: 20px;" %>
-      <%= link_to "Orders", orders_path, style: "color: white; margin-right: 20px;" %>
-
-      <% if user_signed_in? %>
-        <span style="margin-right: 10px;">
-          <%= current_user.email %>
-        </span>
-
-        <%= button_to "Logout", destroy_user_session_path,
-    method: :delete,
-    style: "background: none; border: none; color: white; cursor: pointer; padding: 0; display: inline;" %>
-      <% else %>
-        <%= link_to "Login", new_user_session_path,
-            style: "color: white; margin-right: 10px;" %>
-
-        <%= link_to "Sign Up", new_user_registration_path,
-            style: "color: white;" %>
-      <% end %>
-    </div>
-
+  <div style="font-size: 34px; font-weight: 700; letter-spacing: -0.5px;">
+    <%= link_to "RetailFlow", products_path, style: "text-decoration: none; color: #111;" %>
   </div>
+
+  <div style="display: flex; align-items: center; gap: 36px; font-size: 18px; font-weight: 600;">
+    <%= link_to "Products", products_path, style: "text-decoration: none; color: #111;" %>
+    <%= link_to "Cart (#{@cart_count})", cart_path, style: "text-decoration: none; color: #111;" %>
+    <%= link_to "Orders", orders_path, style: "text-decoration: none; color: #111;" %>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 20px; font-size: 17px; font-weight: 500;">
+    <% if user_signed_in? %>
+      <span style="color: #333;"><%= current_user.email %></span>
+
+      <%= button_to "Logout", destroy_user_session_path,
+          method: :delete,
+          style: "background: none; border: none; color: #111; cursor: pointer; font-size: 17px; font-weight: 500; padding: 0;" %>
+    <% else %>
+      <%= link_to "Login", new_user_session_path, style: "text-decoration: none; color: #111;" %>
+      <%= link_to "Sign Up", new_user_registration_path, style: "text-decoration: none; color: #111;" %>
+    <% end %>
+  </div>
+
+</div>
 
   <!-- PAGE CONTENT -->
   <% if notice %>
