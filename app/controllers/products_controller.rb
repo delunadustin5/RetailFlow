@@ -109,36 +109,57 @@ class ProductsController < ApplicationController
   end
 
   def checkout
-    normalize_cart_session
+  normalize_cart_session
 
-    order = current_user.orders.create(total: 0)
-    total = 0
+  unless user_signed_in?
+    redirect_to new_user_session_path, alert: "Please log in before checking out."
+    return
+  end
 
-    session[:cart].each do |product_id, quantity|
-      product = Product.find_by(id: product_id)
-      next unless product
+  # First pass: validate stock
+  session[:cart].each do |product_id, quantity|
+    product = Product.find_by(id: product_id)
+    next unless product
 
-      quantity = quantity.to_i
-      next if quantity <= 0
-      next if product.stock < quantity
+    quantity = quantity.to_i
 
-      subtotal = product.price.to_f * quantity
-
-      order.order_items.create(
-        product: product,
-        quantity: quantity,
-        price: product.price
-      )
-
-      total += subtotal
-      product.update(stock: product.stock - quantity)
+    if quantity <= 0
+      redirect_to cart_path, alert: "Invalid quantity in cart."
+      return
     end
 
-    order.update(total: total)
-    session[:cart] = {}
-
-    redirect_to products_path, notice: "Order placed successfully!"
+    if product.stock < quantity
+      redirect_to cart_path, alert: "Not enough stock for #{product.name}."
+      return
+    end
   end
+
+  order = current_user.orders.create(total: 0)
+  total = 0
+
+  session[:cart].each do |product_id, quantity|
+    product = Product.find_by(id: product_id)
+    next unless product
+
+    quantity = quantity.to_i
+    subtotal = product.price * quantity
+
+    order.order_items.create(
+      product: product,
+      quantity: quantity,
+      price: product.price
+    )
+
+    total += subtotal
+
+    product.update(stock: product.stock - quantity)
+  end
+
+  order.update(total: total)
+  session[:cart] = {}
+
+  redirect_to orders_path, notice: "Order placed successfully!"
+end
 
   private
 

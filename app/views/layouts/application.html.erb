@@ -55,6 +55,17 @@
   </div>
 
   <!-- PAGE CONTENT -->
+  <% if notice %>
+  <div style="background-color: #d4edda; color: #155724; padding: 10px 20px; margin: 0;">
+    <%= notice %>
+  </div>
+<% end %>
+
+<% if alert %>
+  <div style="background-color: #f8d7da; color: #721c24; padding: 10px 20px; margin: 0;">
+    <%= alert %>
+  </div>
+<% end %>
   <%= yield %>
 
 </body>
