@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
       @products = @products.where(category: params[:category])
     end
   end
-
+before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
   def show
     @product = Product.find(params[:id])
   end

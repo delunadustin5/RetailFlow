@@ -15,6 +15,11 @@
     <p style="color: red; font-weight: bold;">Out of Stock</p>
     <% end %>
 
+    <% if user_signed_in? %>
+  <%= link_to "Edit", edit_product_path(@product) %>
+  <%= button_to "Delete", @product, method: :delete %>
+<% end %>
+
     <div style="margin-top: 20px;">
         <% if @product.stock > 0 %>
         <%= button_to "Add to Cart", add_to_cart_product_path(@product), method: :post,

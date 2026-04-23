@@ -10,9 +10,12 @@
     <% end %>
 
     <p>
+    <% if user_signed_in? %>
+  <p>
     <%= link_to "Add New Product", new_product_path,
-      style: "background-color: #007bff; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
-    </p>
+        style: "background-color: #007bff; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+  </p>
+<% end %>
 
     <div style="margin-bottom: 25px;">
       <%= form_with url: products_path, method: :get, local: true do %>
@@ -21,7 +24,7 @@
         style: "padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px;" %>
 
       <%= select_tag :category,
-        options_for_select(Product.pluck(:category).uniq, params[:category]),
+        options_for_select(Product.pluck(:category).uniq.sort, params[:category]),
         include_blank: "All Categories",
         style: "padding: 10px; margin-left: 8px; border-radius: 5px;" %>
 
@@ -35,12 +38,11 @@
 
 <% if @products.any? %>
   <div style="
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-">
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  ">
     <% @products.each do |product| %>
-      <% next unless product %>
 
       <div style="background: white; border: 1px solid #ddd; border-radius: 10px; width: 250px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
 
@@ -55,34 +57,37 @@
         <p style="color: #666;"><%= product.description %></p>
         <p><strong>Category:</strong> <%= product.category %></p>
         <p><strong>Price:</strong> $<%= sprintf('%.2f', product.price) %></p>
-        <% if product.stock > 0 %>
-        <p><strong>Stock:</strong> <%= product.stock %></p>
-        <% else %>
-        <p style="color: red; font-weight: bold;">Out of Stock</p>
-        <% end %>
-
-       <div style="margin-top: 15px; display: flex; gap: 10px;">
-        <%= link_to "View", product,
-        style: "background-color: #6c757d; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;" %>
 
         <% if product.stock > 0 %>
-        <%= button_to "Add to Cart", add_to_cart_product_path(product),
-        method: :post,
-        style: "background-color: #28a745; color: white; padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+          <p><strong>Stock:</strong> <%= product.stock %></p>
         <% else %>
-        <span style="color: red; font-weight: bold;">Out of Stock</span>
+          <p style="color: red; font-weight: bold;">Out of Stock</p>
         <% end %>
-      </div>
 
-      <div style="margin-top: 10px; display: flex; gap: 10px;">
-      <%= link_to "Edit", edit_product_path(product),
-      style: "background-color: #ffc107; color: black; padding: 8px 12px; border-radius: 5px; text-decoration: none;" %>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+          <%= link_to "View", product,
+              style: "background-color: #6c757d; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;" %>
 
-      <%= button_to "Delete", product_path(product),
-      method: :delete,
-      data: { confirm: "Are you sure?" },
-      style: "background-color: #dc3545; color: white; padding: 8px 12px; border: none; border-radius: 5px;" %>
-      </div>
+          <% if product.stock > 0 %>
+            <%= button_to "Add to Cart", add_to_cart_product_path(product),
+                method: :post,
+                style: "background-color: #28a745; color: white; padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;" %>
+          <% else %>
+            <span style="color: red; font-weight: bold;">Out of Stock</span>
+          <% end %>
+        </div>
+
+        <% if user_signed_in? %>
+          <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <%= link_to "Edit", edit_product_path(product),
+                style: "background-color: #ffc107; color: black; padding: 8px 12px; border-radius: 5px; text-decoration: none;" %>
+
+            <%= button_to "Delete", product_path(product),
+                method: :delete,
+                style: "background-color: #dc3545; color: white; padding: 8px 12px; border: none; border-radius: 5px;" %>
+          </div>
+        <% end %>
+
       </div>
     <% end %>
   </div>
